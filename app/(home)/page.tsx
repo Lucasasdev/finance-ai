@@ -6,6 +6,7 @@ import TimeSelect from "./_components/time-select";
 import { isMatch } from "date-fns";
 import TransactionPieChart from "./_components/transactions-pie-chart";
 import { getDashboard } from "../_data/get-dashboard";
+import ExpensesPerCategory from "./_components/expenses-per-category";
 
 interface HomeProps {
   searchParams: {
@@ -24,7 +25,7 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
     redirect("/?month=01");
   }
 
-  const dashboard = getDashboard(month);
+  const dashboard = await getDashboard(month);
 
   return (
     <>
@@ -38,18 +39,21 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
           <div className="flex flex-col gap-6">
             <SummaryCards
               month={month}
-              balance={(await dashboard).balance}
-              depositsTotal={(await dashboard).depositsTotal}
-              expensesTotal={(await dashboard).expensesTotal}
-              investmentsTotal={(await dashboard).investmentsTotal}
+              balance={dashboard.balance}
+              depositsTotal={dashboard.depositsTotal}
+              expensesTotal={dashboard.expensesTotal}
+              investmentsTotal={dashboard.investmentsTotal}
             />
 
             <div className="grid grid-cols-3 grid-rows-1 gap-6">
               <TransactionPieChart
-                depositsTotal={(await dashboard).depositsTotal}
-                expensesTotal={(await dashboard).expensesTotal}
-                investimentsTotal={(await dashboard).investmentsTotal}
-                typesPercentage={(await dashboard).typesPercentage}
+                depositsTotal={dashboard.depositsTotal}
+                expensesTotal={dashboard.expensesTotal}
+                investimentsTotal={dashboard.investmentsTotal}
+                typesPercentage={dashboard.typesPercentage}
+              />
+              <ExpensesPerCategory
+                ExpensesPerCategory={dashboard.totalExpensePerCategory}
               />
             </div>
           </div>
