@@ -26,7 +26,9 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
     redirect(`/?month=${new Date().getMonth() + 1}`);
   }
 
-  const dashboard = await getDashboard(month);
+  const year = new Date().getFullYear();
+
+  const dashboard = await getDashboard({ month, year });
 
   return (
     <>
